@@ -50,7 +50,7 @@ func main() {
 	}
 
 	repos := repository.NewRepository(db)
-	services := service.NewServices(repos)
+	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
 	var port = cfg.App.Port

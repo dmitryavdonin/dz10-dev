@@ -5,20 +5,29 @@ import (
 	"billing/internal/repository"
 )
 
-type Billing interface {
-	Create(input model.Billing) (int, error)
-	GetById(id int) (model.Billing, error)
-	GetAll(limit int, offset int) ([]model.Billing, error)
+type Account interface {
+	Create(input model.BillingAccount) (int, error)
+	GetById(id int) (model.BillingAccount, error)
+	GetAll(limit int, offset int) ([]model.BillingAccount, error)
 	Delete(id int) error
-	Update(id int, input model.Billing) error
+	Update(id int, input model.BillingAccount) error
 }
 
-type Service struct {
-	Billing
+type Transaction interface {
+	Create(input model.BillingTransaction) (int, error)
+	GetById(id int) (model.BillingTransaction, error)
+	GetAll(user_id int, limit int, offset int) ([]model.BillingTransaction, error)
+	Delete(id int) error
 }
 
-func NewService(repos *repository.Repository) *Service {
-	return &Service{
-		Billing: NewBillingService(repos.Billing),
+type Services struct {
+	Account
+	Transaction
+}
+
+func NewServices(repos *repository.Repository) *Services {
+	return &Services{
+		Account:     NewBillingService(repos.Account),
+		Transaction: NewTransactionService(repos.Transaction),
 	}
 }

@@ -7,23 +7,25 @@ import (
 )
 
 type Handler struct {
-	services *service.Service
+	services *service.Services
 }
 
-func NewHandler(services *service.Service) *Handler {
+func NewHandler(services *service.Services) *Handler {
 	return &Handler{services: services}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
-	api := router.Group("/billing")
+	api := router.Group("/")
 	{
-		api.POST("/", h.create)
-		api.GET("/:id", h.getById)
-		api.GET("/", h.getAll)
-		api.DELETE("/:id", h.delete)
-		api.PUT("/:id", h.update)
+		api.POST("/account", h.createAccount)
+		api.GET("/account/:id", h.getById)
+		api.GET("/account", h.getAll)
+		api.DELETE("/account/:id", h.delete)
+		api.POST("/deposit", h.deposit)
+		api.POST("/withdrawal", h.withdrawal)
+		api.GET("/transaction/:id", h.getTransactionsForUserId)
 
 	}
 
