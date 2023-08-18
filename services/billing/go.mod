@@ -1,4 +1,4 @@
-module user
+module billing
 
 go 1.20
 

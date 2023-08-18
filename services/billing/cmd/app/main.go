@@ -1,18 +1,17 @@
 package main
 
 import (
+	"billing"
 	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
-	book "user"
-
-	"user/internal/config"
-	"user/internal/handler"
-	"user/internal/repository"
-	"user/internal/service"
+	"billing/internal/config"
+	"billing/internal/handler"
+	"billing/internal/repository"
+	"billing/internal/service"
 
 	"github.com/dmitryavdonin/gtools/migrations"
 	"github.com/sirupsen/logrus"
@@ -56,7 +55,7 @@ func main() {
 
 	var port = cfg.App.Port
 
-	srv := new(book.Server)
+	srv := new(billing.Server)
 	go func() {
 		if err := srv.Run(port, handlers.InitRoutes()); err != nil {
 			logrus.Fatalf("error occured while running http server: %s", err.Error())

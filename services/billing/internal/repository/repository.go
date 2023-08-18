@@ -1,25 +1,25 @@
 package repository
 
 import (
-	"user/internal/model"
+	"billing/internal/model"
 
 	"gorm.io/gorm"
 )
 
-type User interface {
-	Create(item model.User) (int, error)
-	GetById(id int) (model.User, error)
-	GetAll(limit int, offset int) ([]model.User, error)
+type Billing interface {
+	Create(item model.Billing) (int, error)
+	GetById(id int) (model.Billing, error)
+	GetAll(limit int, offset int) ([]model.Billing, error)
 	Delete(id int) error
-	Update(id int, item model.User) error
+	Update(id int, item model.Billing) error
 }
 
 type Repository struct {
-	User
+	Billing
 }
 
 func NewRepository(db *gorm.DB) *Repository {
 	return &Repository{
-		User: NewUserPostgres(db),
+		Billing: NewBillingPostgres(db),
 	}
 }

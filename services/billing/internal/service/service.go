@@ -1,24 +1,24 @@
 package service
 
 import (
-	"user/internal/model"
-	"user/internal/repository"
+	"billing/internal/model"
+	"billing/internal/repository"
 )
 
-type User interface {
-	Create(input model.User) (int, error)
-	GetById(id int) (model.User, error)
-	GetAll(limit int, offset int) ([]model.User, error)
+type Billing interface {
+	Create(input model.Billing) (int, error)
+	GetById(id int) (model.Billing, error)
+	GetAll(limit int, offset int) ([]model.Billing, error)
 	Delete(id int) error
-	Update(id int, input model.User) error
+	Update(id int, input model.Billing) error
 }
 
 type Service struct {
-	User
+	Billing
 }
 
 func NewService(repos *repository.Repository) *Service {
 	return &Service{
-		User: NewUserService(repos.User),
+		Billing: NewBillingService(repos.Billing),
 	}
 }

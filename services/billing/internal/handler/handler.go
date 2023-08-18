@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"user/internal/service"
+	"billing/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +17,7 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
 
-	api := router.Group("/user")
+	api := router.Group("/billing")
 	{
 		api.POST("/", h.create)
 		api.GET("/:id", h.getById)

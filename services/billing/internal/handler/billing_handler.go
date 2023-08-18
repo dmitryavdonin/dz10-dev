@@ -5,26 +5,26 @@ import (
 	"strconv"
 	"time"
 
-	"user/internal/model"
+	"billing/internal/model"
 
 	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) create(c *gin.Context) {
-	var input model.User
+	var input model.Billing
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	item := model.User{
-		Username:   input.Username,
+	item := model.Billing{
+		UserId:     input.UserId,
 		Balance:    input.Balance,
 		CreatedAt:  time.Now(),
 		ModifiedAt: time.Now(),
 	}
 
-	id, err := h.services.User.Create(item)
+	id, err := h.services.Billing.Create(item)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -43,7 +43,7 @@ func (h *Handler) getById(c *gin.Context) {
 		return
 	}
 
-	item, err := h.services.User.GetById(id)
+	item, err := h.services.Billing.GetById(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -61,8 +61,8 @@ func (h *Handler) getAll(c *gin.Context) {
 	intLimit, _ := strconv.Atoi(limit)
 	offset := (intPage - 1) * intLimit
 
-	var items []model.User
-	items, err := h.services.User.GetAll(intLimit, offset)
+	var items []model.Billing
+	items, err := h.services.Billing.GetAll(intLimit, offset)
 	if err != nil {
 		c.JSON(http.StatusBadGateway, gin.H{"status": "error", "message": err.Error()})
 		return
@@ -78,7 +78,7 @@ func (h *Handler) delete(c *gin.Context) {
 		return
 	}
 
-	err = h.services.User.Delete(id)
+	err = h.services.Billing.Delete(id)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -88,7 +88,7 @@ func (h *Handler) delete(c *gin.Context) {
 }
 
 func (h *Handler) update(c *gin.Context) {
-	var input model.User
+	var input model.Billing
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -100,13 +100,12 @@ func (h *Handler) update(c *gin.Context) {
 		return
 	}
 
-	item := model.User{
-		Username:   input.Username,
+	item := model.Billing{
 		Balance:    input.Balance,
 		ModifiedAt: time.Now(),
 	}
 
-	err = h.services.User.Update(id, item)
+	err = h.services.Billing.Update(id, item)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
