@@ -11,8 +11,8 @@
             "mode": "debug",
             "program": "${workspaceFolder}\\cmd\\app\\main.go",
             "env": {
-                "APP_SERVICE_NAME": "billing_service",
-                "APP_PORT": "8001",
+                "APP_SERVICE_NAME": "order_service",
+                "APP_PORT": "8002",
                 "DB_DBNAME": "postgres",
                 "DB_HOST": "localhost",
                 "DB_PORT": "5432",

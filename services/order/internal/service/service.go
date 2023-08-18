@@ -1,24 +1,23 @@
 package service
 
 import (
-	"billing/internal/model"
-	"billing/internal/repository"
+	"order/internal/model"
+	"order/internal/repository"
 )
 
-type Billing interface {
-	Create(input model.Billing) (int, error)
-	GetById(id int) (model.Billing, error)
-	GetAll(limit int, offset int) ([]model.Billing, error)
-	Delete(id int) error
-	Update(id int, input model.Billing) error
+type Order interface {
+	Create(order model.Order) (int, error)
+	GetById(orderId int) (model.Order, error)
+	GetAll(limit int, offset int) ([]model.Order, error)
+	Delete(orderId int) error
 }
 
-type Service struct {
-	Billing
+type Services struct {
+	Order
 }
 
-func NewService(repos *repository.Repository) *Service {
-	return &Service{
-		Billing: NewBillingService(repos.Billing),
+func NewServices(repos *repository.Repository) *Services {
+	return &Services{
+		Order: NewOrderService(repos.Order),
 	}
 }

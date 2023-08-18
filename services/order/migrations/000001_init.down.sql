@@ -1,1 +1,1 @@
-drop table if exists "integer";
+drop table if exists "order";
