@@ -1,12 +1,15 @@
 package handler
 
 import (
+	"encoding/json"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
 	"order/internal/model"
 
+	"github.com/IBM/sarama"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -43,7 +46,24 @@ func (h *Handler) createOrder(c *gin.Context) {
 
 	c.JSON(http.StatusOK, order)
 
-	logrus.Printf("createOrder(): Try to create Saga for order_id = %d, user_id = %d, price = %d", order.ID, order.UserId, order.Price)
+	logrus.Printf("createOrder(): Try to send message to the kafka CREATE_ORDER_TOPIC for order_id = %d, user_id = %d, price = %d", order.ID, order.UserId, order.Price)
+
+	msg := model.CreatedOrderMsg{Data: order}
+
+	msgStr, err := json.Marshal(msg)
+	if err != nil {
+		logrus.Errorf("createOrder(): Cannot prepare message to the kafka, order_id = %d, error = %s", order.ID, err.Error())
+		return
+	}
+
+	topic := os.Getenv("KAFKA_ORDER_CREATED_TOPIC")
+
+	producerMsg := &sarama.ProducerMessage{Topic: topic, Value: sarama.StringEncoder(msgStr)}
+	_, _, err = h.kafkaProducer.Producer.SendMessage(producerMsg)
+	if err != nil {
+		logrus.Errorf("createOrder(): Cannot send message to the kafka, order_id = %d, error = %s", order.ID, err.Error())
+		return
+	}
 }
 
 // get order by id

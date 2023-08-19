@@ -20,3 +20,7 @@ type NewOrder struct {
 	DeliveryAddress string `json:"delivery_address"`
 	DeliveryDate    string `json:"delivery_date"`
 }
+
+type CreatedOrderMsg struct {
+	Data Order `json:"data"`
+}
