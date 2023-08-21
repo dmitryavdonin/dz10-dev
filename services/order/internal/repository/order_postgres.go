@@ -2,6 +2,7 @@ package repository
 
 import (
 	"order/internal/model"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -40,5 +41,21 @@ func (r *OrderPostgres) GetAll(limit int, offset int) ([]model.Order, error) {
 
 func (r *OrderPostgres) Delete(orderId int) error {
 	result := r.db.Delete(&model.Order{}, "id = ?", orderId)
+	return result.Error
+}
+
+func (r *OrderPostgres) Update(orderId int, input model.Order) error {
+	var updatedItem model.Order
+	result := r.db.First(&updatedItem, "id = ?", orderId)
+	if result.Error != nil {
+		return result.Error
+	}
+	now := time.Now()
+	itemToUpdate := model.Order{
+		Status:     input.Status,
+		Reason:     input.Reason,
+		ModifiedAt: now,
+	}
+	result = r.db.Model(&updatedItem).Select("status", "reason", "modified_at").Updates(itemToUpdate)
 	return result.Error
 }

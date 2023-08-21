@@ -17,7 +17,11 @@
                 "DB_HOST": "localhost",
                 "DB_PORT": "5432",
                 "DB_USERNAME": "postgres",
-                "DB_PASSWORD": "manager"
+                "DB_PASSWORD": "manager",
+                "KAFKA_HOST": "localhost",
+                "KAFKA_PORT": "29092",
+                "KAFKA_ORDER_CREATED_TOPIC": "order_created",
+                "KAFKA_PAYMENT_STATUS_TOPIC": "payment_status"
             },
         }
     ]

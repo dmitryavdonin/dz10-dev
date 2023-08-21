@@ -1,17 +1,22 @@
 package handler
 
 import (
+	"billing/internal/broker"
 	"billing/internal/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Handler struct {
-	services *service.Services
+	services      *service.Services
+	kafkaProducer *broker.KafkaProducer
 }
 
-func NewHandler(services *service.Services) *Handler {
-	return &Handler{services: services}
+func NewHandler(services *service.Services, kafkaProducer *broker.KafkaProducer) *Handler {
+	return &Handler{
+		services:      services,
+		kafkaProducer: kafkaProducer,
+	}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {

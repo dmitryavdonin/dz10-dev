@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
-	"os"
 	"strconv"
 	"time"
 
@@ -48,7 +47,10 @@ func (h *Handler) createOrder(c *gin.Context) {
 
 	logrus.Printf("createOrder(): Try to send message to the kafka CREATE_ORDER_TOPIC for order_id = %d, user_id = %d, price = %d", order.ID, order.UserId, order.Price)
 
-	msg := model.CreatedOrderMsg{Data: order}
+	msg := model.CreatedOrderMsg{Data: model.OrderInfo{
+		OrderId: order.ID,
+		UserId:  order.UserId,
+		Price:   order.Price}}
 
 	msgStr, err := json.Marshal(msg)
 	if err != nil {
@@ -56,14 +58,14 @@ func (h *Handler) createOrder(c *gin.Context) {
 		return
 	}
 
-	topic := os.Getenv("KAFKA_ORDER_CREATED_TOPIC")
-
-	producerMsg := &sarama.ProducerMessage{Topic: topic, Value: sarama.StringEncoder(msgStr)}
+	producerMsg := &sarama.ProducerMessage{Topic: h.kafkaProducer.OrderCreatedTopic, Value: sarama.StringEncoder(msgStr)}
 	_, _, err = h.kafkaProducer.Producer.SendMessage(producerMsg)
 	if err != nil {
 		logrus.Errorf("createOrder(): Cannot send message to the kafka, order_id = %d, error = %s", order.ID, err.Error())
 		return
 	}
+
+	logrus.Print("createOrder(): END")
 }
 
 // get order by id

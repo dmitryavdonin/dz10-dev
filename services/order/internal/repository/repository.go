@@ -11,6 +11,7 @@ type Order interface {
 	GetById(orderId int) (model.Order, error)
 	GetAll(limit int, offset int) ([]model.Order, error)
 	Delete(orderId int) error
+	Update(order_id int, order model.Order) error
 }
 
 type Repository struct {

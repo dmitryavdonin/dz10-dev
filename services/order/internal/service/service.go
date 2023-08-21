@@ -9,6 +9,7 @@ type Order interface {
 	Create(order model.Order) (int, error)
 	GetById(orderId int) (model.Order, error)
 	GetAll(limit int, offset int) ([]model.Order, error)
+	Update(order_id int, order model.Order) error
 	Delete(orderId int) error
 }
 

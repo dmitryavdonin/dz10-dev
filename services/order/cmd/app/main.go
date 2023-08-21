@@ -61,7 +61,7 @@ func main() {
 	handlers := handler.NewHandler(services, producer)
 	//crate kafka consumer
 	broker_handlers := map[string]sarama.ConsumerGroupHandler{
-		cfg.Kafka.PaymentStatusTopic: broker.BuildPaymentStatusHandler(services),
+		cfg.Kafka.PaymentStatusTopic: broker.BuildPaymentStatusHandler(services, cfg.Kafka.PaymentStatusTopic),
 	}
 	broker.RunConsumers(context.Background(), broker_handlers, cfg.Kafka.Host, cfg.Kafka.Port, cfg.Kafka.PaymentStatusTopic)
 

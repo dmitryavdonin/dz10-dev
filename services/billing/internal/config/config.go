@@ -19,6 +19,13 @@ type Config struct {
 		Host     string
 		DBname   string
 	}
+
+	Kafka struct {
+		Host               string
+		Port               string
+		OrderCreatedTopic  string
+		PaymentStatusTopic string
+	}
 }
 
 func InitConfig(prefix string) (*Config, error) {

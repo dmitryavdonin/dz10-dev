@@ -21,6 +21,12 @@ type NewOrder struct {
 	DeliveryDate    string `json:"delivery_date"`
 }
 
+type OrderInfo struct {
+	OrderId int `json:"order_id,omitempty"`
+	UserId  int `json:"user_id,omitempty"`
+	Price   int `json:"price,omitempty"`
+}
+
 type CreatedOrderMsg struct {
-	Data Order `json:"data"`
+	Data OrderInfo `json:"data"`
 }
